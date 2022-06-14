@@ -47,9 +47,16 @@
 .display-flex-align-end {
   align-items: flex-end;
 }
-
+.rounded-calc-body,
 .rounded {
   border-radius: 1rem;
+}
+
+@media screen and (max-width: 480px) {
+  .rounded-calc-body {
+    border-radius: 0;
+  }
+  
 }
 
 body {
