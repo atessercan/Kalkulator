@@ -45,7 +45,6 @@ class Kalkulator {
 
   createOperationString(param) {
     let strLngt = this.operationString.length;
-
     if (param.classList.contains("nums")) {
       if (
         this.operationString[0] == 0 &&
@@ -58,6 +57,7 @@ class Kalkulator {
       ) {
         this.operationString = this.operationString.slice(1);
       }
+
       this.operationString += param.innerText;
       this.displayOperationString(this.operationString);
     } else if (param.classList.contains("operators")) {
@@ -76,11 +76,11 @@ class Kalkulator {
     } else if (param.id == "equal") {
       this.fitToScreen("equal");
       let result = eval(this.operationString);
-      if (!Number.isInteger(result)) {
+      if (this.isFloat(result)) {
         this.dotUsed = true;
       } else if (Number.isInteger(result)) {
-        this.dotUsed = true;
-      }
+        this.dotUsed = false;
+      } 
       this.displayOperationString(result);
       document.querySelector(".previous").innerText = this.operationString;
       this.operationString = JSON.stringify(result);
@@ -95,14 +95,16 @@ class Kalkulator {
         this.displayOperationString(this.operationString);
       }
     } else if (param.id == "dot") {
-      if (this.dotUsed == false) {
+      if (this.dotUsed == false ) {
         this.operationString += param.innerText;
         this.displayOperationString(this.operationString);
         this.dotUsed = true;
+      } else if (this.dotUsed == true){
       }
     } else if (param.id == "ans") {
       if (
         this.operationString == "0" ||
+        this.operationString == "" ||
         this.operationString[strLngt - 1] == "+" ||
         this.operationString[strLngt - 1] == "-" ||
         this.operationString[strLngt - 1] == "*" ||
@@ -117,7 +119,9 @@ class Kalkulator {
         this.displayOperationString(this.operationString);
       }
     }
+    
   }
+
 
   displayOperationString(param) {
     if (param == "clear") {
@@ -126,6 +130,10 @@ class Kalkulator {
       this.operationString = "";
     } else if (this.operationString.length == 0) {
       document.querySelector(".current").innerText = "0";
+    } else if (param === "equal") {
+      this.operationString = "";
+      document.querySelector(".current").innerText =this.operationString;
+      this.operationString = "";
     } else {
       document.querySelector(".current").innerText = param;
     }
@@ -160,6 +168,9 @@ class Kalkulator {
         currentDisplay.style.fontSize = this.currentFontSize + "rem";
       }
     }
+  }
+  isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
   }
 }
 
